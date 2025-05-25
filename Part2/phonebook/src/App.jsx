@@ -3,6 +3,8 @@ import personService from './services/persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Display from './components/Display'
+import Notification from './components/Notification'
+import ErrorMessage from './components/ErrorMessage'
 
 const App = () => {
 
@@ -10,6 +12,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll().then(allPersons => { setPersons(allPersons) })
@@ -26,6 +30,15 @@ const App = () => {
           setPersons(persons.map(person => person.id === currPerson.id ? updatedPerson : person))
           setNewName('')
           setNewNum('')
+          setMessage(`Updated ${updatedPerson.name}'s number`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 3000)
+        }).catch(error => {
+          setErrorMessage(`Information of ${currPerson.name} has already been removed from server`)
+          setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
         })
       }
     } else if (newName.length === 0 || newNum.length === 0) {
@@ -36,6 +49,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNum('')
+        setMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
     }
   }
@@ -51,18 +68,28 @@ const App = () => {
     setSearch(event.target.value)
   }
 
-  
   const handleDeleteOf = (id) => {
     if (window.confirm(`delete ${persons.find(person => person.id === id).name}?`)) {
       personService.deletePerson(id).then(deletedPerson => {
         setPersons(persons.filter(person => person.id !== deletedPerson.id))
-      })
+        setMessage(`Deleted ${deletedPerson.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+      }).catch(error => {
+          setErrorMessage(`Information of ${currPerson.name} has already been removed from server`)
+          setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+        })
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
+      <ErrorMessage errorMessage={errorMessage} />
       <Filter search={search} handleSearch={handleSearch} />
       <h2>add a new</h2>
       <PersonForm addDetails={addDetails} newNum={newNum} newName={newName} handleNameChange={handleNameChange} handleNumChange={handleNumChange} />
