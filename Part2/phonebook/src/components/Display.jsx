@@ -1,15 +1,12 @@
 const Person = (props) => {
     return (
         <div>
-            {props.person.name} {props.person.number}
+            {props.person.name} {props.person.number} <button onClick={props.handleDelete}>delete</button>
         </div>
     )
 }
 
-const Display = ({persons, search}) => {
-  if (persons.length === 0) {
-    return <div>No persons found!</div>
-  }
+const Display = ({persons, search, handleDeleteOf}) => {
   if (search.length > 0) {
     return (
       <div>
@@ -17,9 +14,7 @@ const Display = ({persons, search}) => {
           .filter(person => 
             person.name.toLowerCase().includes(search.toLowerCase())
           )
-          .map(person => 
-            <Person key={person.id} person={person} />
-          )
+          .map(person => <Person key={person.id} person={person} handleDelete={() => handleDeleteOf(person.id)} />)
         }
       </div>
     )
@@ -27,9 +22,7 @@ const Display = ({persons, search}) => {
   } else {
       return (
         <div>
-          {persons.map(person =>
-            <Person key={person.id} person={person} />
-          )}
+          {persons.map(person => <Person key={person.id} person={person} handleDelete={() => handleDeleteOf(person.id)} />)}
         </div>
       )
   }
