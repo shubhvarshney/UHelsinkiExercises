@@ -1,12 +1,15 @@
 const Person = (props) => {
     return (
-        <div key={props.person.name}>
+        <div>
             {props.person.name} {props.person.number}
         </div>
     )
 }
 
 const Display = ({persons, search}) => {
+  if (persons.length === 0) {
+    return <div>No persons found!</div>
+  }
   if (search.length > 0) {
     return (
       <div>
@@ -15,7 +18,7 @@ const Display = ({persons, search}) => {
             person.name.toLowerCase().includes(search.toLowerCase())
           )
           .map(person => 
-            <Person key={person.name} person={person} />
+            <Person key={person.id} person={person} />
           )
         }
       </div>
@@ -25,7 +28,7 @@ const Display = ({persons, search}) => {
       return (
         <div>
           {persons.map(person =>
-            <Person key={person.name} person={person} />
+            <Person key={person.id} person={person} />
           )}
         </div>
       )
