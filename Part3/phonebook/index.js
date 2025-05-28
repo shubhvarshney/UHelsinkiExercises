@@ -6,7 +6,6 @@ const app = express()
 
 app.use(express.static('dist'))
 app.use(express.json())
-app.use(requestLogger)
 
 app.use(morgan(function (tokens, req, res) {
   morgan.token('data', function (req, res) { return JSON.stringify(req.body) })
