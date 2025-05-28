@@ -71,8 +71,8 @@ const App = () => {
   const handleDeleteOf = (id) => {
     if (window.confirm(`delete ${persons.find(person => person.id === id).name}?`)) {
       personService.deletePerson(id).then(deletedPerson => {
-        setPersons(persons.filter(person => person.id !== deletedPerson.id))
-        setMessage(`Deleted ${deletedPerson.name}`)
+        setPersons(persons.filter(person => person.id != id))
+        setMessage(`Deleted ${persons.find(person => person.id === id).name}`)
         setTimeout(() => {
           setMessage(null)
         }, 3000)
