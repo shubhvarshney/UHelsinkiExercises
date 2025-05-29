@@ -41,8 +41,6 @@ const App = () => {
         }, 3000)
         })
       }
-    } else if (newName.length === 0 || newNum.length === 0) {
-      alert(`Please enter a name and a number before continuing`)
     } else {
       const personObject = { name: newName, number: newNum }
       personService.create(personObject).then(returnedPerson => {
@@ -52,6 +50,11 @@ const App = () => {
         setMessage(`Added ${returnedPerson.name}`)
         setTimeout(() => {
           setMessage(null)
+        }, 3000)
+      }).catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+          setErrorMessage(null)
         }, 3000)
       })
     }
