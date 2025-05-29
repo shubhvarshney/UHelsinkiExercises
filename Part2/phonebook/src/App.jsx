@@ -35,7 +35,7 @@ const App = () => {
             setMessage(null)
           }, 3000)
         }).catch(error => {
-          setErrorMessage(`Information of ${currPerson.name} has already been removed from server`)
+          setErrorMessage(error.message)
           setTimeout(() => {
           setErrorMessage(null)
         }, 3000)
@@ -80,7 +80,7 @@ const App = () => {
           setMessage(null)
         }, 3000)
       }).catch(error => {
-          setErrorMessage(`Information of ${currPerson.name} has already been removed from server`)
+          setErrorMessage(error.message)
           setTimeout(() => {
           setErrorMessage(null)
         }, 3000)

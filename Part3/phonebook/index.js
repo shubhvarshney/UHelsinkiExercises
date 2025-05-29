@@ -51,8 +51,6 @@ app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(id).then(person => {
         if (person) {
             response.json(person)
-        } else {
-            response.status(404).end()
         }
     })
     .catch(error => next(error))
