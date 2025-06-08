@@ -53,14 +53,6 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
       return response.status(400).json({ error: 'userId missing or not valid'})
     }
 
-    const user = request.user
-
-    const blog = await Blog.findById(request.params.id)
-    
-    if (user.id.toString() !== blog.user.toString()) {
-      return response.status(401).json({ error: 'unauthorized user'})
-    }
-
     const updatedBlog = await Blog.findByIdAndUpdate(
       request.params.id,
       request.body,
@@ -72,12 +64,12 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     )
 
     if (!updatedBlog) {
-      return response.status(404).end()
+      return response.status(404).json({ error: 'no updated blog provided' })
     }
 
     response.status(200).json(updatedBlog)
   } catch (error) {
-    return response.status(400).end()
+    return response.status(400).json({ error: error.message })
   }
 })
 
