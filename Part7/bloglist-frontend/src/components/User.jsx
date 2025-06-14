@@ -1,15 +1,28 @@
+import { Card, CardContent, List, ListItem, ListItemText, ListItemIcon } from '@mui/material'
+import BookIcon from '@mui/icons-material/Book';
+
+
 const User = ({ user }) => {
   if (user) {
     return (
-      <div>
-        <h1>{user.name}</h1>
-        <h3>added blogs</h3>
-        <ul>
+      <Card>
+        <CardContent>
+          <h2>{user.name}</h2>
+        <List>
+          <h3>Added Blogs</h3>
           {user.blogs.map((b) => (
-            <li key={b.id}>{b.title}</li>
+            <ListItem key={b.id}>
+              <ListItemIcon>
+                <BookIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {b.title}
+              </ListItemText>
+            </ListItem>
           ))}
-        </ul>
-      </div>
+        </List>
+        </CardContent>
+      </Card>
     );
   }
 };

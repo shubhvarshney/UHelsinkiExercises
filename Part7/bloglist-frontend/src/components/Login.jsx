@@ -1,33 +1,32 @@
 import PropTypes from "prop-types";
+import { Container, Button, TextField } from '@mui/material'
 
 const Login = (props) => {
   return (
-    <div>
-      <h2> log in to blog application </h2>
+    <Container align="center">
+      <h2> Log in to Blog Application </h2>
       <form onSubmit={props.handleLogin}>
-        <div>
-          username{" "}
-          <input
+        <div style={ { paddingBottom: 20 } }>
+          <TextField
+            label="username"
             type="text"
             value={props.username}
-            name="Username"
             onChange={({ target }) => props.setUsername(target.value)}
             data-testid="username"
           />
         </div>
-        <div>
-          password{" "}
-          <input
+        <div style={ { paddingBottom: 20 } }>
+          <TextField
+            label="password"
             type="password"
             value={props.password}
-            name="Password"
             onChange={({ target }) => props.setPassword(target.value)}
             data-testid="password"
           />
         </div>
-        <button type="submit">login</button>
+        <Button variant="contained" type="submit">login</Button>
       </form>
-    </div>
+    </Container>
   );
 };
 
