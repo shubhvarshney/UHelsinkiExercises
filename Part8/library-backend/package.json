@@ -11,6 +11,11 @@
     "dev": "node --watch index.js"
   },
   "dependencies": {
-    "@apollo/server": "^4.12.2"
+    "@apollo/server": "^4.12.2",
+    "dotenv": "^16.5.0",
+    "graphql": "^16.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.2",
+    "mongoose-unique-validator": "^4.0.1"
   }
 }
