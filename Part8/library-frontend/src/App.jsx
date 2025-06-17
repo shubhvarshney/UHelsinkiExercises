@@ -4,12 +4,46 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login"
 import Recommendations from "./components/Recommendations"
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
+import { BOOK_ADDED, ALL_BOOKS } from './queries'
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqById = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.id
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+
+  const existingData = cache.readQuery(query)
+
+  if (!existingData) {
+    return
+  }
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqById(allBooks.concat(addedBook)),
+    }
+  })
+}
 
 const App = () => {
   const [page, setPage] = useState("authors");
   const [token, setToken] = useState(null)
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      alert(`${addedBook.title} has been added`)
+      updateCache(client.cache, { query: ALL_BOOKS, variables: { genre: null } }, addedBook)
+      addedBook.genres.forEach((genre) => {
+        updateCache(client.cache, { query: ALL_BOOKS, variables: { genre } }, addedBook)
+      })
+    }
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('library-token')
