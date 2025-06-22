@@ -33,7 +33,7 @@ app.post('/exercises', (req, res) => {
 
     if (daily_exercises || target) {
         if (!isNaN(Number(target)) && Array.isArray(daily_exercises) && daily_exercises.every((i) => typeof i === 'number')) {
-            const result = exerciseCalculator.calculateExercises( target, daily_exercises );
+            const result = exerciseCalculator.calculateExercises( target as number, daily_exercises );
             res.json(result);
         } else {
             res.status(400).json({ error: 'malformatted parameters' }).end();
