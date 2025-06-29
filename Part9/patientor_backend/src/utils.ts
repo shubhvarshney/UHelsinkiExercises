@@ -1,5 +1,5 @@
 import { NewPatient, Gender, Entry, Diagnosis, HealthCheckRating, Discharge, NewEntry, SickLeave } from './types';
-import { z } from 'zod'
+import { z } from 'zod';
 
 const newPatientSchema = z.object({
     name: z.string(),
@@ -7,15 +7,15 @@ const newPatientSchema = z.object({
     dateOfBirth: z.string().date(),
     gender: z.nativeEnum(Gender),
     ssn: z.string(),
-})
+});
 
 export const toNewPatient = (object: unknown): NewPatient => {
     return { ...newPatientSchema.parse(object), entries: new Array<Entry> };
-}
+};
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
-}
+};
 
 const parseType = (type: unknown): string => {
     if ( !type || !isString(type) ) {
@@ -23,7 +23,7 @@ const parseType = (type: unknown): string => {
     }
 
     return type;
-}
+};
 
 const parseDescription = (description: unknown): string => {
     if ( !description || !isString(description) ) {
@@ -31,18 +31,18 @@ const parseDescription = (description: unknown): string => {
     }
 
     return description;
-}
+};
 
 const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date));
-}
+};
 
 const parseDate = (date: unknown): string => {
     if (!date || !isString(date) || !isDate(date)) {
         throw new Error('Incorrect or missing date');
     }
     return date;
-}
+};
 
 const parseSpecialist = (specialist: unknown): string => {
     if ( !specialist || !isString(specialist) ) {
@@ -50,7 +50,7 @@ const parseSpecialist = (specialist: unknown): string => {
     }
 
     return specialist;
-}
+};
 
 const parseDiagnosisCodes = (object: unknown):
     Array<Diagnosis['code']> => {
@@ -59,11 +59,11 @@ const parseDiagnosisCodes = (object: unknown):
     }
     
     return object.diagnosisCodes as Array<Diagnosis['code']>;
-}
+};
 
 const isHealthCheckRating = (param: number): param is HealthCheckRating => {
     return Object.values(HealthCheckRating).map(v => Number(v)).includes(param);
-}
+};
 
 const parseHealthCheckRating = (rating: unknown): number => {
     if ( isNaN(Number(rating)) || !isHealthCheckRating(Number(rating))) {
@@ -71,7 +71,7 @@ const parseHealthCheckRating = (rating: unknown): number => {
     }
 
     return Number(rating);
-}
+};
 
 
 const parseEmployerName = (employerName: unknown): string => {
@@ -80,7 +80,7 @@ const parseEmployerName = (employerName: unknown): string => {
     }
 
     return employerName;
-}
+};
 
 const parseDischarge = (discharge: unknown): Discharge => {
     if (
@@ -99,7 +99,7 @@ const parseDischarge = (discharge: unknown): Discharge => {
         date: d.date,
         criteria: d.criteria,
     };
-}
+};
 
 const parseSickLeave = (sickLeave: unknown): SickLeave | undefined => {
     if (!sickLeave) {
@@ -110,7 +110,7 @@ const parseSickLeave = (sickLeave: unknown): SickLeave | undefined => {
     } else {
         throw new Error('Invalid sick leave');
     }
-}
+};
 
 export const toNewEntry = (object: unknown): NewEntry => {
     if ( !object || typeof object !== 'object' ) {
@@ -187,6 +187,6 @@ export const toNewEntry = (object: unknown): NewEntry => {
         }
 
     } else {
-        throw new Error('Invalid type')
+        throw new Error('Invalid type');
     }
-}
+};
